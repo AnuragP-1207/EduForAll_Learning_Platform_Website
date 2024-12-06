@@ -151,13 +151,13 @@ Mobile App: Develop a native app for Android and iOS.
 
 📸 Screenshots
 
-Sign-Up Page
+Sign-Up Page:
 ![signup 1](https://github.com/user-attachments/assets/5eeea19f-2e0f-41f9-bfb4-60c064759991)
 
 
 
 
-Tutorial Page
+Tutorial Page:
 ![course1 1](https://github.com/user-attachments/assets/1906811e-e8b7-433c-9228-6e76e2c5e645)
 
 ---
