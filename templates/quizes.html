@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Page</title>
+    <style>
+        body{
+            background: #001e4d;
+        }
+        .app{
+            background: #fff;
+            width: 90%;
+            max-width: 600px;
+            margin:100px auto 0;
+            border-radius: 10px;
+            padding: 30px;
+        }
+        .app h1{
+            font-weight: 25px;
+            color: #001e4d;
+            font-weight: 600;
+            border-bottom: 1px solid #333;
+            padding-bottom: 30px;
+        }
+        .quiz{
+            padding: 20px 0;
+        }
+        .quiz h2{
+            font-size: 18px;
+            color: #001e4d;
+            font-weight: 600;
+        }
+        .btn{
+            background: #fff;
+            color: #222;
+            font-weight: 500;
+            width: 100%;
+            border:1px solid #222;
+            padding: 10px;
+            margin:10px 0;
+            text-align: left;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn:hover:not([disabled]){
+            background: #222;
+            color: #fff;
+        }
+        .btn:disabled{
+            cursor: no-drop;
+        }
+        #next-btn{
+            background: #001e4d;
+            color: #fff;
+            font-weight: 500;
+            width: 150px;
+            border:0;
+            padding: 10px;
+            margin: 20px auto 0;
+            border-radius: 4px;
+            cursor: pointer;
+            display: none;
+        }
+        .correct{
+            background: #9aeabc;
+        }
+        .incorrect{
+            background: #ff9393;
+        }
+        #certificationBtn {
+            background: #001e4d;
+            color: #fff;
+            font-weight: 500;
+            width: 150px;
+            border: 0;
+            padding: 10px;
+            margin: 20px auto 0;
+            border-radius: 4px;
+            cursor: pointer;
+            display: none; /* Adjusted this line to make it visible */
+        }
+        
+        /* Your existing CSS styles go here */
+    </style>
+</head>
+<body>
+    <div class="app">
+        <h1>Simple Quiz</h1>
+        <div class="quiz">
+            <h2 id="question">Question Goes Here</h2>
+            <div id="answer-buttons">
+                <!-- Answer buttons will be dynamically added here -->
+            </div>
+            <button id="next-btn">Next</button>
+            <button id="certificationBtn" class="btn" disabled onclick="viewCertificate()">View Certification</button>
+        </div>
+    </div>
+    <script>
+        const questions = [
+            {
+                question: "What does HTML stand for?",
+                answers: [
+                    { text: "High Tech Morden Language", correct: false },
+                    { text: "Hyper Text Markup Language", correct: true },
+                    { text: "Hyper Transfer Markup Language", correct: false },
+                    { text: "Hyperlink Text Markup Language", correct: false },
+                ]
+            },
+            {
+                question: "Which CSS property is used to control the spacing between elements?",
+                answers:[
+                    {text: "margin", correct: true},
+                    {text: "padding", correct: false},
+                    {text: "spacing", correct: false},
+                    {text: "gutter", correct: false},
+                ]
+            },
+            {
+                question: " What does CSS stand for?",
+                answers:[
+                    {text: "Creative Style Sheets", correct: false},
+                    {text: "Cascading Style Sheets", correct: true},
+                    {text: "Computer Style Sheets", correct: false},
+                    {text: "Colorful Style Sheets", correct: false},
+                ]
+            },
+            {
+                question: " What is the purpose of the HTML <head> tag?",
+                answers:[
+                    {text: "Defines the main content of the page", correct: false},
+                    {text: "Represents a header section", correct: false},
+                    {text: "Displays a heading at the top of the page", correct: false},
+                    {text: "Contains metadata about the document", correct: true},
+                ]
+            },
+            {
+                question: "What is the role of JavaScript in web development?",
+                answers: [
+                    { text: "Defining page structure", correct: false },
+                    { text: "Managing database operations", correct: false },
+                    { text: "Enhancing user interfaces and interactivity", correct: true },
+                    { text: "Styling the web page", correct: false },
+                ]
+            },
+            {
+                question: " Which HTTP status code represents a successful response?",
+                answers: [
+                    { text: "200 OK", correct: true },
+                    { text: "500 Internal Server Error", correct: false },
+                    { text: "404 Not Found", correct: false },
+                    { text: "302 Found", correct: false },
+                ]
+            },
+            {
+                question: "What does the term 'responsive web design' refer to?",
+                answers: [
+                    { text: "Designing websites with vibrant colors", correct: false },
+                    { text: "Creating websites that respond to user input", correct: false },
+                    { text: " Designing websites that work well on various devices and screen sizes", correct: true },
+                    { text: "Designing websites with interactive animations", correct: false },
+                ]
+            },
+            {
+                question: "What does the acronym API stand for?",
+                answers: [
+                    { text: "Advanced Programming Interface", correct: false },
+                    { text: "Application Programming Interface", correct: true },
+                    { text: "Automated Programming Interface", correct: false },
+                    { text: "Application Process Integration", correct: false },
+                ]
+            },
+            {
+                question: "Which of the following is a version control system commonly used in web development?",
+                answers: [
+                    { text: "HTTP", correct: false },
+                    { text: "SMTP", correct: false },
+                    { text: "FTP", correct: false },
+                    { text: "SVN", correct: true },
+                ]
+            },
+            {
+                question: "What is the purpose of the <meta charset='UTF-8'> tag in HTML?",
+                answers: [
+                    { text: "Creates an unordered list", correct: false },
+                    { text: " Adds a meta description to the page", correct: false },
+                    { text: "Specifies the background color of the page", correct: false },
+                    { text: "Defines the character set for the document", correct: true },
+                ]
+            },
+            {
+                question: " What is the primary function of the CSS z-index property? ",
+                answers: [
+                    { text: "Sets the background image of an element", correct: false },
+                    { text: "Controls the stacking order of positioned elements", correct: true },
+                    { text: "Defines the font size of text", correct: false },
+                    { text: "Adjusts the transparency of an element", correct: false },
+                ]
+            },
+            {
+                question: "Which of the following is a front-end JavaScript framework/library for building user interfaces?",
+                answers: [
+                    { text: "React", correct: true },
+                    { text: "Flask", correct: false },
+                    { text: "Django", correct: false },
+                    { text: "Express", correct: false },
+                ]
+            },
+            {
+                question: "What is the purpose of the SQL language in web development?",
+                answers: [
+                    { text: "Defining page layout", correct: false },
+                    { text: "Managing databases", correct: true },
+                    { text: "Creating interactive animations", correct: false },
+                    { text: "Styling web pages", correct: false },
+                ]
+            },
+
+        ];
+
+        const questionElement = document.getElementById("question");
+        const answerButton = document.getElementById("answer-buttons");
+        const nextButton = document.getElementById("next-btn");
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            nextButton.innerHTML = "Next";
+            showQuestion();
+        }
+
+        function showQuestion() {
+            resetState();
+            let currentQuestion = questions[currentQuestionIndex];
+            let questionNo = currentQuestionIndex + 1;
+            questionElement.innerHTML = questionNo + ". " + currentQuestion.question;
+
+            currentQuestion.answers.forEach(answer => {
+                const button = document.createElement("button");
+                button.innerHTML = answer.text;
+                button.classList.add("btn");
+                answerButton.appendChild(button);
+                if (answer.correct) {
+                    button.dataset.correct = answer.correct;
+                }
+                button.addEventListener("click", selectAnswer);
+            });
+        }
+
+        function resetState() {
+            nextButton.style.display = "none";
+            while (answerButton.firstChild) {
+                answerButton.removeChild(answerButton.firstChild);
+            }
+        }
+
+        function selectAnswer(e) {
+            const selectedBtn = e.target;
+            const isCorrect = selectedBtn.dataset.correct === "true";
+            if (isCorrect) {
+                selectedBtn.classList.add("correct");
+                score++;
+            } else {
+                selectedBtn.classList.add("incorrect");
+            }
+            Array.from(answerButton.children).forEach(button => {
+                if (button.dataset.correct === "true") {
+                    button.classList.add("correct");
+                }
+                button.disabled = true;
+            });
+            nextButton.style.display = "block";
+        }
+
+        function showScore() {
+            resetState();
+            questionElement.innerHTML = `You Scored ${score} out of ${questions.length}!`;
+            nextButton.innerHTML = "Play Again";
+            nextButton.style.display = "block";
+            // Calculate the percentage score
+            let percentageScore = (score / questions.length) * 100;
+            // If the score is more than 75%, enable the certification button
+            if (percentageScore >= 75) {
+                certificationBtn.disabled = false;
+            }
+            certificationBtn.style.display = "inline-block"; // Show the certification button
+        }
+        
+
+        function handleNextButton() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                showScore();
+            }
+        }
+        function viewCertificate() {
+            // Replace this with the actual functionality for viewing the certificate
+            alert("Certificate viewing functionality goes here!");
+        }
+
+        nextButton.addEventListener("click", () => {
+            if (currentQuestionIndex < questions.length) {
+                handleNextButton();
+            } else {
+                startQuiz();
+            }
+        });
+
+        // Add an event listener to the certification button
+        document.getElementById("certificationBtn").addEventListener("click", function() {
+        // Redirect to the certificate generation page
+        window.location.href = "generate_certificate";
+        });
+
+        startQuiz();
+    </script>
+</body>
+</html>

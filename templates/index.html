@@ -1,0 +1,627 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Home - EduForAll</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Append
+  * Updated: Sep 18 2023 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/append-bootstrap-website-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="index-page" data-bs-spy="scroll" data-bs-target="#navmenu">
+  <style>
+    .profile-picture {
+      border-radius: 50%;
+      width: 35px;  /* Adjust as needed */
+      height: 35px; /* Adjust as needed */
+  }
+  </style>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
+
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="assets/img/logo.png" alt=""> -->
+        <h1>EduForAll</h1>
+        <span>.</span>
+      </a>
+
+      <!-- Nav Menu -->
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="index.html#hero" class="active">Home</a></li>
+          {% comment %} <li><a href="index.html#about">Search</a></li> {% endcomment %}
+          <li><a href="courses">Tutorials</a></li>
+          <li><a href="quizes">Quizes</a></li>
+          <li><a href="community">Community</a></li>
+          <li><a href="about">About Us</a></li>
+          <li class="dropdown has-dropdown"><a href="#"><span>Categories</span> <i class="bi bi-chevron-down"></i></a>
+            <ul class="dd-box-shadow">
+              <li><a href="courses">Tutorials</a></li>
+              <li class="dropdown has-dropdown"><a href="#"><span>More Courses</span> <i class="bi bi-chevron-down"></i></a>
+                <ul class="dd-box-shadow">
+                  <li><a href="python">Python</a></li>
+                  <li><a href="django">Django</a></li>
+                </ul>
+              </li>
+              <li><a href="blog">Blog Courses</a></li>
+            </ul>
+          </li>
+          <li><a href="contact">Contact</a></li>
+          <li>
+            <a href="dashboard">
+              {% if user.is_authenticated and user.userprofile.profile_picture.url %}
+                  <img src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture" class="profile-picture">
+              {% else %}
+                  <img src="{% static 'profile3.jpg' %}" alt="Profile Picture" class="profile-picture">
+              {% endif %}
+          </a>
+        </li>
+    </ul>
+        
+        
+
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav><!-- End Nav Menu -->
+
+      {% if user.is_authenticated %}      
+      <a class="btn-getstarted" href="logout">Log Out</a>
+      {% else %}
+      <a class="btn-getstarted" href="login">Log In</a>
+      {% endif %}
+
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <!-- Hero Section - Home Page -->
+    <section id="hero" class="hero">
+
+      <img src="{%static 'coding.jpg' %}" alt="" data-aos="fade-in">
+
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-10">
+            {% if user.is_authenticated %}
+            <h2 data-aos="fade-up" data-aos-delay="100">Welcome, {{user.username}}</h2>
+            {% else %}
+            <h2 data-aos="fade-up" data-aos-delay="100">Welcome to Our Website</h2>
+            {% endif %}
+            <p data-aos="fade-up" data-aos-delay="200">"Explore. Learn. Code."</p>
+          </div>
+          <div class="col-lg-5">
+            <form action="register" class="sign-up-form d-flex" data-aos="fade-up" data-aos-delay="300">
+              <input type="text" class="form-control" placeholder="Enter email address">
+              <input type="submit" class="btn btn-primary" formaction="{% url 'register' %}" value="Sign Up">
+              <!--<input type="submit" class="btn btn-primary" href="register" value="Sign Up">-->
+              <!--<input type="submit" class="btn btn-primary"  href="register.html" value="Sign up">-->
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </section><!-- End Hero Section -->
+
+    
+
+     
+
+    <!-- About Section - Home Page -->
+    <section id="about" class="about">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row align-items-xl-center gy-5">
+
+          <div class="col-xl-5 content">
+            <h3>About Us</h3>
+            <h2>Welcome to EduForAll</h2>
+            <p>
+              Your go-to platform for learning coding and programming skills. We are passionate about making coding education accessible to everyone, regardless of their background or experience.
+            </p>
+            <p>
+              Our mission is to provide high-quality tutorial videos, interactive quizzes, and a supportive community to help you excel in the world of coding. Whether you're a beginner taking your first steps in programming or an experienced developer looking to expand your skills, we've got you covered.
+            </p>
+            <a href="about" class="read-more"><span>Read More</span><i class="bi bi-arrow-right"></i></a>
+          </div>
+
+          <div class="col-xl-7">
+            <div class="row gy-4 icon-boxes">
+
+              {% for feature in features%}
+
+              <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="icon-box">
+                  <i class="bi bi-buildings"></i>
+                  <h3>{{feature.name}}</h3>
+                  <p>{{feature.details}}</p>
+                </div>
+              </div> <!-- End Icon Box -->
+              {% endfor %}
+
+              
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section><!-- End About Section -->
+
+    
+
+        
+
+    <!-- Services Section - Home Page -->
+    <section id="services" class="services">
+
+      <!--  Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Services</h2>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-6 " data-aos="fade-up" data-aos-delay="100">
+            <div class="service-item d-flex">
+              <div class="icon flex-shrink-0"><i class="bi bi-briefcase"></i></div>
+              <div>
+                <h4 class="title"><a href="services-details.html" class="stretched-link">Comprehensive Courses</a></h4>
+                <p class="description">Embark on a learning journey with our comprehensive courses that cover a wide range of topics. From beginner to advanced levels, our expertly crafted courses provide in-depth knowledge and practical skills. Learn at your own pace and acquire expertise in your chosen field.</p>
+              </div>
+            </div>
+          </div>
+          <!-- End Service Item -->
+
+          <div class="col-lg-6 " data-aos="fade-up" data-aos-delay="200">
+            <div class="service-item d-flex">
+              <div class="icon flex-shrink-0"><i class="bi bi-card-checklist"></i></div>
+              <div>
+                <h4 class="title"><a href="services-details.html" class="stretched-link">Interactive Quizzes</a></h4>
+                <p class="description">Engage your learners with our interactive quizzes designed to reinforce key concepts. Our dynamic quiz platform allows you to create, customize, and track quizzes seamlessly. Encourage active learning and assess understanding with ease.</p>
+              </div>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-6 " data-aos="fade-up" data-aos-delay="300">
+            <div class="service-item d-flex">
+              <div class="icon flex-shrink-0"><i class="bi bi-bar-chart"></i></div>
+              <div>
+                <h4 class="title"><a href="services-details.html" class="stretched-link">Certification Excellence</a></h4>
+                <p class="description">Achieve recognition for your accomplishments with our certification programs. Our industry-recognized certificates validate your skills and knowledge, enhancing your professional profile. Elevate your career prospects and gain a competitive edge in your field through our rigorous certification process.</p>
+              </div>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-6 " data-aos="fade-up" data-aos-delay="400">
+            <div class="service-item d-flex">
+              <div class="icon flex-shrink-0"><i class="bi bi-binoculars"></i></div>
+              <div>
+                <h4 class="title"><a href="services-details.html" class="stretched-link">Vibrant Learning Community</a></h4>
+                <p class="description">Join our thriving learning community and connect with like-minded individuals. Share insights, collaborate on projects, and engage in discussions with fellow learners and experts. Our community platform fosters a supportive and interactive environment, enhancing your learning experience and expanding your professional network.</p>
+              </div>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-6 " data-aos="fade-up" data-aos-delay="500">
+            <div class="service-item d-flex">
+              <div class="icon flex-shrink-0"><i class="bi bi-brightness-high"></i></div>
+              <div>
+                <h4 class="title"><a href="services-details.html" class="stretched-link">Feedback - Contact Us</a></h4>
+                <p class="description">We value your feedback and are always ready to help. Reach out to us anytime you need assistance or have suggestions. Your input helps us improve and provide a better learning experience.</p>
+              </div>
+            </div>
+          </div><!-- End Service Item -->
+
+          <div class="col-lg-6 " data-aos="fade-up" data-aos-delay="600">
+            <div class="service-item d-flex">
+              <div class="icon flex-shrink-0"><i class="bi bi-calendar4-week"></i></div>
+              <div>
+                <h4 class="title"><a href="services-details.html" class="stretched-link">Future Enhancement</a></h4>
+                <p class="description">We are committed to continuous improvement and innovation. Stay tuned for exciting future enhancements that will provide an even more engaging and enriching learning experience.</p>
+              </div>
+            </div>
+          </div><!-- End Service Item -->
+
+        </div>
+
+      </div>
+
+    </section><!-- End Services Section -->
+
+    <!-- Features Section - Home Page -->
+    <section id="features" class="features">
+
+      <!--  Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Features</h2>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row gy-4 align-items-center features-item">
+          <div class="col-lg-5 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
+            <h3>Comprehensive Courses</h3>
+            <p>
+              Our courses cover a wide range of topics and are designed with care to provide in-depth knowledge. Each course is structured to provide a comprehensive understanding of the subject.
+            </p>
+            <a href="courses" class="btn btn-get-started">Get Started</a>
+          </div>
+          <div class="col-lg-7 order-1 order-lg-2 d-flex align-items-center" data-aos="zoom-out" data-aos-delay="100">
+            <div class="image-stack">
+              <img src="{% static 'course1.jpg' %}" alt="" class="stack-front">
+              <img src="{% static 'course2.jpg' %}" alt="" class="stack-back">
+            </div>
+          </div>
+        </div><!-- Features Item -->
+
+        <div class="row gy-4 align-items-stretch justify-content-between features-item ">
+          <div class="col-lg-6 d-flex align-items-center features-img-bg" data-aos="zoom-out">
+            <img src="{% static 'quizz.jpg' %}" class="img-fluid" alt="">
+          </div>
+          <div class="col-lg-5 d-flex justify-content-center flex-column" data-aos="fade-up">
+            <h3>Interactive Quizzes</h3>
+            <p>Test your knowledge and reinforce learning with our interactive quizzes. Each quiz is designed to be engaging and fun, making the learning process more enjoyable and effective.</p>
+            <a href="quizes" class="btn btn-get-started align-self-start">Get Started</a>
+          </div>
+        </div><!-- Features Item -->
+
+      </div>
+
+    </section><!-- End Features Section -->
+
+    <!-- Faq Section - Home Page -->
+    <section id="faq" class="faq">
+
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="content px-xl-5">
+              <h3><span>Frequently Asked </span><strong>Questions</strong></h3>
+              
+            </div>
+          </div>
+
+          <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+
+            <div class="faq-container">
+              <div class="faq-item faq-active">
+                <h3><span class="num">1.</span> <span>What is your website/service about?</span></h3>
+                <div class="faq-content">
+                  <p>
+                    Our website/service is a comprehensive learning management platform designed to provide users with access to a wide range of courses and educational resources. Whether you're looking to enhance your skills, explore new topics, or advance your career, our platform offers a diverse selection of courses taught by expert instructors.</p>
+                </div>
+                <i class="faq-toggle bi bi-chevron-right"></i>
+              </div><!-- End Faq item-->
+
+              <div class="faq-item">
+                <h3><span class="num">2.</span> <span>What types of materials are included in the course?</span></h3>
+                <div class="faq-content">
+                  <p>our goal is to provide comprehensive and engaging learning experiences that cater to diverse learning styles and preferences, empowering learners to achieve their educational and professional goals.</p>
+                </div>
+                <i class="faq-toggle bi bi-chevron-right"></i>
+              </div><!-- End Faq item-->
+
+              <div class="faq-item">
+                <h3><span class="num">3.</span> <span>How can I contact customer support?</span></h3>
+                <div class="faq-content">
+                  <p> Fill out the contact form on our website with your name, email address, and message, and our support team will get back to you as soon as possible. You can access the contact form by navigating to the "Contact Us" page on our website.</p>
+                </div>
+                <i class="faq-toggle bi bi-chevron-right"></i>
+              </div><!-- End Faq item-->
+
+              <div class="faq-item">
+                <h3><span class="num">4.</span> <span>Are there any community forums or discussion boards for course participants?</span></h3>
+                <div class="faq-content">
+                  <p>Yes, we have vibrant community forums and discussion boards where course participants can engage with each other, ask questions, share insights, and collaborate on various topics related to the courses.</p>
+                </div>
+                <i class="faq-toggle bi bi-chevron-right"></i>
+              </div><!-- End Faq item-->
+
+              <div class="faq-item">
+                <h3><span class="num">5.</span> <span>Do you provide certification?</span></h3>
+                <div class="faq-content">
+                  <p>Yes, we offer certification upon successful completion of the course and passing quizzes with a score of 75% or above.</p>
+                </div>
+                <i class="faq-toggle bi bi-chevron-right"></i>
+              </div><!-- End Faq item-->
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- End Faq Section -->
+
+    <!-- Team Section - Home Page -->
+    <section id="team" class="team">
+
+      <!--  Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Team</h2>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row gy-5">
+
+          <div class="col-lg-4 col-md-6 offset-lg-1 member" data-aos="fade-up" data-aos-delay="100">
+            <div class="member-img" style="border-radius: 50%; overflow: hidden; width: 200px; height: 200px;">
+              <img src="{% static 'adi2.jpeg' %}" class="img-fluid" alt="" style="object-fit: cover;">
+              <!-- ... -->
+              <div class="social">
+                <a href="#"><i class="bi bi-twitter"></i></a>
+                <a href="#"><i class="bi bi-facebook"></i></a>
+                <a href="#"><i class="bi bi-instagram"></i></a>
+                <a href="www.linkedin.com/in/aditya-lakhiwal-309810213"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+            <div class="member-info text-center">
+              <h4>Lakhiwal Aditya Anilkumar</h4>
+              <span>Founder</span>
+              <p>Currently pursuing my final year in BSc IT, I have a passion for coding and expanding my knowledge. In my free time, I enjoy reading and working out, always striving for personal growth and improvement.</p>
+            </div>
+          </div><!-- End Team Member -->
+
+          <div class="col-lg-4 col-md-6 offset-lg-2 member" data-aos="fade-up" data-aos-delay="200">
+            <div class="member-img" style="border-radius: 50%; overflow: hidden; width: 200px; height: 200px;">
+              <img src="{% static 'pandey2.jpeg' %}" class="img-fluid" alt="" style="object-fit: cover;">
+              <div class="social">
+                <a href="#"><i class="bi bi-twitter"></i></a>
+                <a href="#"><i class="bi bi-facebook"></i></a>
+                <a href="#"><i class="bi bi-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/anurag-pandey-734702250?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+            <div class="member-info text-center">
+              <h4>Pandey Anurag Sanjay</h4>
+              <span>Co-Founder</span>
+              <p>I am a final-year BSc IT student with a passion for design and cybersecurity. In my free time, I enjoy working out and exploring different places around the world. I am dedicated to self-improvement and expanding my knowledge</p>
+            </div>
+          </div><!-- End Team Member -->
+
+        
+
+        </div>
+
+      </div>
+
+    </section><!-- End Team Section -->
+
+    
+              
+
+    <!-- Contact Section - Home Page -->
+    <section id="contact" class="contact">
+
+      <!--  Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Contact</h2>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-6">
+
+            <div class="row gy-4">
+              <div class="col-md-6">
+                <div class="info-item" data-aos="fade" data-aos-delay="200">
+                  <i class="bi bi-geo-alt"></i>
+                  <h3>Address</h3>
+                  <p>M.L Dahanukar College of Commerce</p>
+                  <p>Dixit Road, Vile Parle East, Mumbai - 400057</p>
+                </div>
+              </div><!-- End Info Item -->
+
+              <div class="col-md-6">
+                <div class="info-item" data-aos="fade" data-aos-delay="300">
+                  <i class="bi bi-telephone"></i>
+                  <h3>Call Us</h3>
+                  <p>+1 5589 55488 55</p>
+                  <p>+1 6678 254445 41</p>
+                </div>
+              </div><!-- End Info Item -->
+
+              <div class="col-md-6">
+                <div class="info-item" data-aos="fade" data-aos-delay="400">
+                  <i class="bi bi-envelope"></i>
+                  <h3>Email Us</h3>
+                  <p>adityalakhiwal@gmail.com</p>
+                  <p>anuragpandey@gmail.com</p>
+                </div>
+              </div><!-- End Info Item -->
+
+              <div class="col-md-6">
+                <div class="info-item" data-aos="fade" data-aos-delay="500">
+                  <i class="bi bi-clock"></i>
+                  <h3>Open Hours</h3>
+                  <p>Monday - Friday</p>
+                  <p>9:00AM - 05:00PM</p>
+                </div>
+              </div><!-- End Info Item -->
+
+            </div>
+
+          </div>
+
+          <div class="col-lg-6">
+            <form action="contact" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+              <div class="row gy-4">
+
+                <div class="col-md-6">
+                  <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                </div>
+
+                <div class="col-md-6 ">
+                  <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+                </div>
+
+                <div class="col-md-12">
+                  <input type="text" class="form-control" name="subject" placeholder="Subject" required>
+                </div>
+
+                <div class="col-md-12">
+                  <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
+                </div>
+
+                <div class="col-md-12 text-center">
+                  
+                  <div class="sent-message">Your message has been sent. Thank you!</div>
+
+                  {% csrf_token %}
+                <button type="submit" onclick="showSuccess()">Send Message</button>
+    
+
+                <script>
+                  function showSuccess() {
+                    alert('Form submitted successfully!');
+                  }
+                </script>
+                </div>
+
+              </div>
+            </form>
+          </div><!-- End Contact Form -->
+
+        </div>
+
+      </div>
+
+    </section><!-- End Contact Section -->
+
+  </main>
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-about">
+          <a href="index.html" class="logo d-flex align-items-center">
+            <span>EduForAll</span>
+          </a>
+          <p>Your go-to platform for learning coding and programming skills. We are passionate about making coding education accessible to everyone, regardless of their background or experience.</p>
+          <div class="social-links d-flex mt-4">
+            <a href=""><i class="bi bi-twitter"></i></a>
+            <a href=""><i class="bi bi-facebook"></i></a>
+            <a href=""><i class="bi bi-instagram"></i></a>
+            <a href=""><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><a href="http://127.0.0.1:8000/">Home</a></li>
+            <li><a href="about">About us</a></li>
+            <li><a href="contatct">Contatc Us</a></li>
+            <li><a href="#">Terms of service</a></li>
+            <li><a href="#">Privacy policy</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Our Services</h4>
+          <ul>
+            <li><a href="courses">Courses</a></li>
+            <li><a href="quizes">Quizes</a></li>
+            <li><a href="community">Community</a></li>
+            <li><a href="dashboard">User Dashboard</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <h4>Contact Us</h4>
+          <p>M.L Dahanukar College of Commerce
+           </p>
+          <p>
+            Vile Parle East, Mumbai - 400057</p>
+          <p>India</p>
+          <p class="mt-4"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+          <p><strong>Email:</strong> <span>eduforall@gmail.com</span></p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>&copy; <span>Copyright</span> <strong class="px-1">EduForAll</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you've purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+        Designed by <a href="#">Allowed Hai</a>
+      </div>
+    </div>
+
+  </footer><!-- End Footer -->
+
+  <!-- Scroll Top Button -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+</html>

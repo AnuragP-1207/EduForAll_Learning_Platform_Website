@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+    <style>
+        #bg{
+            background-size: 1800px 900px;
+            background-repeat: no-repeat;
+            background-position: top;
+            background-attachment: fixed;
+        }
+        label{
+            color: white;
+        }
+        h3{
+            color: red;
+        }
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 300px;
+            margin: 0 auto;
+            margin-top: 100px;
+        }
+        h2 {
+            text-align: center;
+            color: white;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 14px 20px;
+            margin: 10px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <body id="bg" style="background-image: url('{% static "coding2.jpg"%}')";>
+    <div class="container">
+        <h2>Login</h2>
+        {% for message in messages %}
+        <h3>{{message}}</h3>
+        {% endfor %}
+        <form action="login" method="POST">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" />
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" />
+            
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>

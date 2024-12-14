@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduForAll Courses</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #343a40;
+            color: #ffffff;
+            text-align: center;
+            padding: 1em 0;
+        }
+
+        section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 2em;
+        }
+
+        .course {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 1em;
+            overflow: hidden;
+            width: 300px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .course:hover {
+            transform: scale(1.05);
+        }
+
+        .course img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .course-content {
+            padding: 1em;
+        }
+
+        h2, p {
+            margin: 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            display: block;
+            margin-top: 1em;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>EduForAll - Blog Courses</h1>
+    </header>
+
+    <section>
+       
+
+        
+
+        
+
+        <div class="course">
+          <img src="{% static "scipython.jpg"%}" alt="Course Image">
+          <div class="course-content">
+              <h2>Scientific Computing with Python (Beta)</h2>
+              <p>This comprehensive course will guide you through the fundamentals of scientific computing, including data structures, and algorithms.</p>
+              <a href="tutorials4">Start Now</a>
+          </div>
+        </div>
+
+        
+
+        
+
+
+        <!-- Add more courses as needed -->
+
+    </section>
+
+</body>
+</html>

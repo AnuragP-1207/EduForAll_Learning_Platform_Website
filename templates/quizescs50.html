@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Page</title>
+    <style>
+        body {
+            background: #001e4d;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .app {
+            background: #fff;
+            width: 90%;
+            max-width: 600px;
+            margin: 100px auto 0;
+            border-radius: 10px;
+            padding: 30px;
+            color: #001e4d;
+            text-align: center;
+        }
+
+        .app h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .quiz {
+            padding: 20px 0;
+            display: none;
+        }
+
+        .quiz h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .btn {
+            background: #fff;
+            color: #222;
+            font-weight: 500;
+            width: 100%;
+            border: 1px solid #222;
+            padding: 10px;
+            margin: 10px 0;
+            text-align: left;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover:not([disabled]) {
+            background: #222;
+            color: #fff;
+        }
+
+        .btn:disabled {
+            cursor: no-drop;
+        }
+
+        #next-btn, #certificate-btn {
+            background: #001e4d;
+            color: #fff;
+            font-weight: 500;
+            width: 150px;
+            border: 0;
+            padding: 10px;
+            margin: 20px auto 0;
+            border-radius: 4px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .correct {
+            background: #9aeabc;
+            border-color: #2e856e;
+        }
+
+        .incorrect {
+            background: #ff9393;
+            border-color: #c56969;
+        }
+
+        #timer {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <h1>Welcome to the Simple Quiz</h1>
+        <p>➤ This quiz consists of multiple-choice questions.<br>➤ You have 15 seconds to answer each question.<br>➤ Score minimum 20 points for the Certificate.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br>&nbsp;&nbsp;&nbsp;!__Best of Luck__!&nbsp;&nbsp;&nbsp;</p>
+        <button id="start-btn">Start Quiz</button>
+        <div class="quiz" id="quiz-section">
+            <h2 id="question">Question Goes Here</h2>
+            <span id="timer">15s</span>
+            <div id="answer-buttons">
+            </div>
+            <button id="next-btn">Next</button>
+        </div>
+        <button id="certificate-btn" onclick="showCertificate()">Show Certificate</button>
+    </div>
+    <script>
+        const questions = [
+         {
+    question: "Which component of Django is responsible for handling database migrations?",
+    answers: [
+        { text: "Django Models", correct: false },
+        { text: "Django Views", correct: false },
+        { text: "Django Migrations", correct: true },
+        { text: "Django Templates", correct: false },
+    ]
+},
+{
+    question: "In Django, what does the 'M' stand for in 'MVC' architecture?",
+    answers: [
+        { text: "Markup", correct: false },
+        { text: "Model", correct: true },
+        { text: "Module", correct: false },
+        { text: "Manager", correct: false },
+    ]
+},
+{
+    question: "Which command is used to create a new Django superuser?",
+    answers: [
+        { text: "django createuser", correct: false },
+        { text: "django makesuperuser", correct: false },
+        { text: "django-admin createsuperuser", correct: true },
+        { text: "django adduser", correct: false },
+    ]
+},
+{
+    question: "What is Django's middleware responsible for?",
+    answers: [
+        { text: "Handling database queries", correct: false },
+        { text: "Processing HTTP requests and responses", correct: true },
+        { text: "Managing static files", correct: false },
+        { text: "Rendering HTML templates", correct: false },
+    ]
+},
+{
+    question: "Which module in Django is used to manage user authentication?",
+    answers: [
+        { text: "django.contrib.users", correct: false },
+        { text: "django.auth", correct: false },
+        { text: "django.contrib.auth", correct: true },
+        { text: "django.security", correct: false },
+    ]
+},
+{
+    question: "In Django, what is the purpose of 'settings.py' file?",
+    answers: [
+        { text: "Defining URL patterns", correct: false },
+        { text: "Configuring application-specific settings", correct: true },
+        { text: "Managing database migrations", correct: false },
+        { text: "Implementing business logic", correct: false },
+    ]
+},
+{
+    question: "What does the Django 'QuerySet' represent?",
+    answers: [
+        { text: "A database table", correct: false },
+        { text: "A collection of database queries", correct: false },
+        { text: "A lazily evaluated list of objects", correct: true },
+        { text: "A database view", correct: false },
+    ]
+},
+{
+    question: "Which tool is commonly used in Django for unit testing?",
+    answers: [
+        { text: "pytest", correct: true },
+        { text: "unittest", correct: false },
+        { text: "nose2", correct: false },
+        { text: "mamba", correct: false },
+    ]
+},
+{
+    question: "What is the purpose of Django's 'signals'?",
+    answers: [
+        { text: "Handling HTTP requests", correct: false },
+        { text: "Triggering actions based on certain events", correct: true },
+        { text: "Defining URL patterns", correct: false },
+        { text: "Managing user sessions", correct: false },
+    ]
+},
+{
+    question: "What does Django's 'cache' framework provide?",
+    answers: [
+        { text: "Client-side storage for web applications", correct: false },
+        { text: "Caching mechanism to improve performance", correct: true },
+        { text: "Tools for managing browser cache", correct: false },
+        { text: "Database caching for fasterqueries", correct: false },
+        ]
+    },
+    {
+        question: "What role does Django's ORM play in backend development?",
+        answers: [
+            { text: "Handles routing in the backend", correct: false },
+            { text: "Manages database interactions and operations", correct: true },
+            { text: "Optimizes front-end performance", correct: false },
+            { text: "Generates user interfaces", correct: false },
+        ]
+    },
+    {
+        question: "In Django, what does the term 'migration' refer to?",
+        answers: [
+            { text: "Moving code between different development environments", correct: false },
+            { text: "Transforming data from one format to another", correct: false },
+            { text: "Managing changes to database schema over time", correct: true },
+            { text: "Optimizing backend code for faster execution", correct: false },
+        ]
+    },
+    {
+        question: "What is the purpose of Django's middleware in backend development?",
+        answers: [
+            { text: "Handling client-side authentication", correct: false },
+            { text: "Managing HTTP requests and responses", correct: true },
+            { text: "Styling web pages", correct: false },
+            { text: "Executing JavaScript code", correct: false },
+        ]
+    },
+    {
+        question: "Which of the following is NOT a built-in authentication method provided by Django for backend development?",
+        answers: [
+            { text: "OAuth", correct: false },
+            { text: "JWT", correct: true },
+            { text: "Session-based authentication", correct: false },
+            { text: "Token-based authentication", correct: false },
+        ]
+    },
+    {
+        question: "What does Django's signals framework allow in backend development?",
+        answers: [
+            { text: "Sending emails asynchronously", correct: false },
+            { text: "Handling pre and post-save events on models", correct: true },
+            { text: "Encrypting sensitive data", correct: false },
+            { text: "Managing user sessions", correct: false },
+        ]
+    },
+    {
+        question: "What is the purpose of Django's cache framework in backend development?",
+        answers: [
+            { text: "Optimizing front-end performance", correct: false },
+            { text: "Storing frequently accessed data to improve performance", correct: true },
+            { text: "Managing user authentication", correct: false },
+            { text: "Handling database migrations", correct: false },
+        ]
+    },
+    {
+        question: "What is the primary role of Django's Form classes in backend development?",
+        answers: [
+            { text: "Rendering HTML templates", correct: false },
+            { text: "Validating user input", correct: true },
+            { text: "Executing JavaScript code", correct: false },
+            { text: "Handling URL routing", correct: false },
+        ]
+    },
+    {
+        question: "What does Django's serialization framework enable in backend development?",
+        answers: [
+            { text: "Optimizing database queries", correct: false },
+            { text: "Converting complex data types into JSON or XML", correct: true },
+            { text: "Generating HTML content dynamically", correct: false },
+            { text: "Managing user sessions", correct: false },
+        ]
+    },
+    {
+        question: "Which of the following is NOT a built-in security feature provided by Django for backend development?",
+        answers: [
+            { text: "Cross-site scripting (XSS) protection", correct: false },
+            { text: "Cross-site request forgery (CSRF) protection", correct: false },
+            { text: "SQL injection prevention", correct: false },
+            { text: "Data encryption for database storage", correct: true },
+        ]
+    },
+    {
+        question: "What role do Django's class-based views play in backend development?",
+        answers: [
+            { text: "Managing frontend design elements", correct: false },
+            { text: "Defining reusable, object-oriented views for handling HTTP requests", correct: true },
+            { text: "Optimizing database queries", correct: false },
+            { text: "Managing user authentication", correct: false },
+        ]
+    },
+    {
+        question: "What is the purpose of Django's middleware in backend development?",
+        answers: [
+            { text: "Handling client-side authentication", correct: false },
+            { text: "Managing HTTP requests and responses", correct: true },
+            { text: "Styling web pages", correct: false },
+            { text: "Executing JavaScript code", correct: false },
+        ]
+    },
+    {
+        question: "Which of the following is NOT a common database backend supported by Django?",
+        answers: [
+            { text: "MySQL", correct: false },
+            { text: "PostgreSQL", correct: false },
+            { text: "Firebase", correct: true },
+            { text: "SQLite", correct: false },
+        ]
+    },
+    {
+        question: "What is the purpose of Django's template tags in backend development?",
+        answers: [
+            { text: "Handling URL routing", "correct": false },
+            { text: "Inserting dynamic data or control flow logic into HTML templates", "correct": true },
+            { text: "Optimizing database queries", "correct": false },
+            { text: "Managing user authentication", "correct": false },
+        ]
+    },
+    {
+        question: "What role does Django's static files handling play in backend development?",
+        answers: [
+            { text: "Managing user authentication", correct: false },
+            { text: "Handling requests for static assets like CSS, JavaScript, and images", correct: true },
+            { text: "Optimizing database queries", correct: false },
+            { text: "Defining URL patterns", correct: false },
+        ]
+    },
+    {
+        question: "What does Django's session framework provide in backend development?",
+        answers: [
+            { text: "Handling database migrations", correct: false },
+            { text: "Storing user-specific data across requests", correct: true },
+            { text: "Managing HTTP requests and responses", correct: false },
+            { text: "Generating HTML content dynamically", correct: false },
+        ]
+    }
+    ];
+    
+            const questionElement = document.getElementById("question");
+            const answerButton = document.getElementById("answer-buttons");
+            const nextButton = document.getElementById("next-btn");
+            const timerElement = document.getElementById("timer");
+            const certificateButton = document.getElementById("certificate-btn");
+            const quizSection = document.getElementById("quiz-section");
+            const startButton = document.getElementById("start-btn");
+    
+            startButton.addEventListener('click', showInstructions);
+    
+            let currentQuestionIndex = 0;
+            let score = 0;
+            let timer;
+    
+            function showInstructions() {
+                document.getElementById("start-btn").style.display = "none";
+                document.querySelector("h1").style.display = "none";
+                document.querySelector("p").style.display = "none";
+                quizSection.style.display = "block";
+                startQuiz();
+            }
+    
+            function startQuiz() {
+                currentQuestionIndex = 0;
+                score = 0;
+                nextButton.innerHTML = "Next";
+                certificateButton.style.display = "none";
+                showQuestion();
+            }
+    
+            function showQuestion() {
+                resetState();
+                let currentQuestion = questions[currentQuestionIndex];
+                let questionNo = currentQuestionIndex + 1;
+                questionElement.innerHTML = `${questionNo}. ${currentQuestion.question}`;
+
+                currentQuestion.answers.forEach(answer => {
+                    const button = document.createElement("button");
+                    button.innerHTML = answer.text;
+                    button.classList.add("btn");
+                    answerButton.appendChild(button);
+                    if (answer.correct) {
+                        button.dataset.correct = answer.correct;
+                    }
+                    button.addEventListener("click", () => selectAnswer(false));
+                });
+    
+                let timeLeft = 15;
+                updateTimerDisplay(timeLeft);
+    
+                timer = setInterval(() => {
+                    timeLeft--;
+                    if (timeLeft >= 0) {
+                        updateTimerDisplay(timeLeft);
+                    } else {
+                        selectAnswer(true);
+                    }
+                }, 1000);
+            }
+    
+            function updateTimerDisplay(seconds) {
+                timerElement.textContent = `${seconds}s`;
+            }
+    
+            function resetState() {
+                nextButton.style.display = "none";
+                while (answerButton.firstChild) {
+                    answerButton.removeChild(answerButton.firstChild);
+                }
+                clearInterval(timer);
+            }
+    
+            function selectAnswer(isTimeUp) {
+                clearInterval(timer);
+            
+                if (isTimeUp) {
+                    const correctBtn = document.querySelector(".btn[data-correct='true']");
+                    if (correctBtn) {
+                        correctBtn.classList.add("correct");
+                    }
+                } else {
+                    const selectedBtn = document.querySelector(".btn:hover") || document.querySelector(".btn[data-correct='true']");
+                    if (!selectedBtn) return;
+            
+                    const isCorrect = selectedBtn.dataset.correct === "true";
+                    if (isCorrect) {
+                        selectedBtn.classList.add("correct");
+                        score++;
+                    } else {
+                        selectedBtn.classList.add("incorrect");
+                    }
+                }
+            
+                // Disable all answer buttons
+                Array.from(answerButton.children).forEach(button => {
+                    if (button.dataset.correct === "true") {
+                        button.classList.add("correct");
+                    }
+                    button.disabled = true;
+                });
+            
+                nextButton.style.display = "block";
+            }
+    
+            function showScore() {
+                resetState();
+                questionElement.innerHTML = `You Scored ${score} out of ${questions.length}!`;
+                nextButton.innerHTML = "Play Again";
+                nextButton.style.display = "block";
+            }
+    
+            function handleNextButton() {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    showQuestion();
+                } else {
+                    showScore();
+                    if (score >= 20) {
+                        certificateButton.style.display = "block";
+                    }
+                }
+            }
+    
+            function showCertificate() {
+                if (score >= 20) {
+                    // Redirect to the certificate page
+                    window.location.href = 'generate_certificate';
+                } else {
+                    // Show an alert if the score is less than 20
+                    alert("Your score is less than 20. You're not eligible for the certificate!");
+                }
+            }
+            
+            nextButton.addEventListener("click", () => {
+                if (currentQuestionIndex < questions.length) {
+                    handleNextButton();
+                } else {
+                    startQuiz();
+                    // Call the showCertificate function after the quiz is finished
+                    showCertificate();
+                }
+            });
+    
+        </script>
+    </body>
+    </html>
+     
+    

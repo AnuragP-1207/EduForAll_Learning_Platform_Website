@@ -1,0 +1,341 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Course Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: #282828;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .course-info {
+            flex: 1;
+            max-width: 800px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-right: 20px;
+            margin-bottom: 20px;
+        }
+
+        .course-thumbnail {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .course-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .course-description {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-container {
+            margin-bottom: 20px;
+        }
+
+        .quiz {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .quiz-question {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .quiz-option {
+            width: 50%;
+            margin-bottom: 10px;
+        }
+
+        .certification-button {
+            background-color: #FF0000;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .certification-button:disabled {
+            background-color: #A0A0A0;
+            cursor: not-allowed;
+        }
+
+        .comments-section {
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+
+        .comment {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .new-comment {
+            margin-top: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Suggested Videos Section */
+        .suggested-videos {
+            flex: 1;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .suggested-videos h3 {
+            margin-bottom: 15px;
+        }
+
+        .video-item {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .video-item img {
+            width: 200px; /* Adjust the width as desired */
+            height: 120px; /* Adjust the height as desired */
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+
+
+        .video-item-info {
+            flex: 1;
+        }
+
+        .video-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .video-link {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .video-link:hover {
+            text-decoration: underline;
+        }
+
+        .add-video-form {
+            margin-top: 20px;
+        }
+
+        .add-video-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .add-video-form input[type="text"],
+        .add-video-form input[type="url"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .add-video-form button[type="submit"] {
+            background-color: #FF0000;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .add-video-form button[type="submit"]:hover {
+            background-color: #D80000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Welcome to Your Course</h1>
+        <p>Unlock the power of knowledge with our interactive course!</p>
+    </header>
+
+    <div class="container">
+        <!-- Course Information -->
+        <div class="course-info">
+            <!-- Course Video Thumbnail with Link -->
+            <a href="https://youtu.be/LfaMVlDaQ24?si=jVxiUdz9idNTOf_H" target="_blank">
+                <img src="https://img.youtube.com/vi/LfaMVlDaQ24/mqdefault.jpg" alt="Course Video Thumbnail" width="800" height="425">
+            </a>
+
+            <!-- Course Title and Description -->
+            <h2 class="course-title">Harvard CS50 (2023)</h2>
+            <p class="course-description">Learn the basics of computer science from Harvard University. This is CS50, an introduction to the intellectual enterprises of computer science and the art of programming. The course is taught live every year and this is the 2023 version.</p>
+
+            <!-- Quizzes Section -->
+            <div class="quiz-container">
+                <!-- Quiz 1 -->
+                <div class="quiz">
+                    <p class="quiz-question">Quiz 1: How do you declare a variable in Python?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="quiz1" value="option1"> variable x;</label>
+                        <label class="quiz-option"><input type="radio" name="quiz1" value="option2"> x = 5;</label>
+                        <label class="quiz-option"><input type="radio" name="quiz1" value="option3"> set x = 5;</label>
+                        <label class="quiz-option"><input type="radio" name="quiz1" value="option4"> int x = 5</label>
+                    </div>
+                </div>
+
+                <!-- Quiz 2 -->
+                <div class="quiz">
+                    <p class="quiz-question">Quiz 2: What is the correct way to comment multiple lines in Python?</p>
+                    <div class="quiz-options">
+                        <label class="quiz-option"><input type="radio" name="quiz2" value="option1"> # This is a comment</label>
+                        <label class="quiz-option"><input type="radio" name="quiz2" value="option2"> // This is a comment</label>
+                        <label class="quiz-option"><input type="radio" name="quiz2" value="option3"> /* This is a comment</label>
+                        <label class="quiz-option"><input type="radio" name="quiz2" value="option4"> ''' This is a comment '''</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- More Quizzes Button -->
+            <button onclick="window.location.href='{% url 'quizescs50' %}'">More Quizzes</button>
+
+            <!-- Certification Button (Initially Locked) -->
+            <button class="certification-button" disabled onclick="showCertification()">View Certification</button>
+
+            <!-- Comments Section -->
+            <div class="comments-section">
+                <h3>Comments</h3>
+
+                <!-- Comment 1 -->
+                <div class="comment">
+                    <strong>User123:</strong>
+                    <p>Great course! I learned a lot.</p>
+                </div>
+
+                <!-- Comment 2 -->
+                <div class="comment">
+                    <strong>Student456:</strong>
+                    <p>Looking forward to more content.</p>
+                </div>
+
+                <!-- New Comment Input -->
+                <div class="new-comment">
+                    <h4>Add Your Comment</h4>
+                    <textarea id="userComment" placeholder="Type your comment here..."></textarea>
+                    <button onclick="submitComment()">Submit</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Suggested Videos Section -->
+        <div class="suggested-videos">
+            <h3>Suggested Videos</h3>
+            <div class="video-item">
+                <img src="https://img.youtube.com/vi/jBzwzrDvZ18/mqdefault.jpg" alt="Video Thumbnail">
+                <div class="video-item-info">
+                    <p class="video-title">Backend Web Development</p>
+                    <a href="https://youtu.be/jBzwzrDvZ18?si=5RwtoRdEmOPmNFfh" class="video-link">Watch Now</a>
+                </div>
+            </div>
+            <div class="video-item">
+                <img src="https://img.youtube.com/vi/JxzZxdht-XY/mqdefault.jpg" alt="Video Thumbnail">
+                <div class="video-item-info">
+                    <p class="video-title">Django (Hindi)</p>
+                    <a href="https://youtu.be/JxzZxdht-XY?si=VnEXZf6lWDv2ml0f" class="video-link">Watch Now</a>
+                </div>
+            </div>
+            <div class="video-item">
+                <img src="{% static "scipython.jpg"%}" alt="Video Thumbnail">
+                <div class="video-item-info">
+                    <p class="video-title">Scientific computing with Python</p>
+                    <a href="https://www.freecodecamp.org/learn/scientific-computing-with-python/" class="video-link">Watch Now</a>
+                </div>
+            </div>
+            <!-- Add more suggested videos here -->
+            <form class="add-video-form">
+                <label for="videoTitle">Video Title:</label>
+                <input type="text" id="videoTitle" name="videoTitle" required>
+                <label for="videoLink">Video Link:</label>
+                <input type="url" id="videoLink" name="videoLink" required>
+                <button type="submit">Submit Video</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Section remains the same -->
+
+</body>
+</html>

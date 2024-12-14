@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Page</title>
+    <style>
+        body {
+            background: #001e4d;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .app {
+            background: #fff;
+            width: 90%;
+            max-width: 600px;
+            margin: 100px auto 0;
+            border-radius: 10px;
+            padding: 30px;
+            color: #001e4d;
+            text-align: center;
+        }
+
+        .app h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .quiz {
+            padding: 20px 0;
+            display: none;
+        }
+
+        .quiz h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .btn {
+            background: #fff;
+            color: #222;
+            font-weight: 500;
+            width: 100%;
+            border: 1px solid #222;
+            padding: 10px;
+            margin: 10px 0;
+            text-align: left;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover:not([disabled]) {
+            background: #222;
+            color: #fff;
+        }
+
+        .btn:disabled {
+            cursor: no-drop;
+        }
+
+        #next-btn, #certificate-btn {
+            background: #001e4d;
+            color: #fff;
+            font-weight: 500;
+            width: 150px;
+            border: 0;
+            padding: 10px;
+            margin: 20px auto 0;
+            border-radius: 4px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .correct {
+            background: #9aeabc;
+            border-color: #2e856e;
+        }
+
+        .incorrect {
+            background: #ff9393;
+            border-color: #c56969;
+        }
+
+        #timer {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <h1>Welcome to the Simple Quiz</h1>
+        <p>➤ This quiz consists of multiple-choice questions.<br>➤ You have 15 seconds to answer each question.<br>➤ Score minimum 20 points for the Certificate.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;!__Best of Luck__!&nbsp;&nbsp;&nbsp;</p>
+        <button id="start-btn">Start Quiz</button>
+        <div class="quiz" id="quiz-section">
+            <h2 id="question">Question Goes Here</h2>
+            <span id="timer">15s</span>
+            <div id="answer-buttons">
+            </div>
+            <button id="next-btn">Next</button>
+        </div>
+        <button id="certificate-btn" onclick="showCertificate()">Show Certificate</button>
+    </div>
+    <script>
+        const questions = [
+        {
+                question: "What does Django primarily facilitate?",
+                answers: [
+                    { text: "Front-end development", correct: false },
+                    { text: "Back-end development", correct: true },
+                    { text: "Mobile app development", correct: false },
+                    { text: "Data science", correct: false },
+                ]
+            },
+            {
+                question: " Which of the following is not a Django component? ",
+                answers: [
+                    { text: "Models", correct: false },
+                    { text: "Views", correct: false },
+                    { text: "Templates", correct: false },
+                    { text: "Controllers", correct: true },
+                ]
+            },
+            {
+                question: "What is the purpose of Django's ORM?",
+                answers: [
+                    { text: "Object-Relational Mapping", correct: true },
+                    { text: "Object-Reactive Model", correct: false },
+                    { text: "Object-Responsive Middleware", correct: false },
+                    { text: "Object-Relay Management", correct: false },
+                ]
+            },
+            {
+                question: "In Django, what does URLconf stand for?",
+                answers: [
+                    { text: "Uniform Resource Locator Configuration", correct: false },
+                    { text: "Universal Resource Locator Configuration", correct: true },
+                    { text: "Uniform Resource Locator Control", correct: false },
+                    { text: "Universal Resource Locator Control", correct: false },
+                ]
+            },
+            {
+                question: "Which command is used to start a new Django project?",
+                answers: [
+                    { text: "django new", correct: false },
+                    { text: "django startproject", correct: true },
+                    { text: "django create", correct: false },
+                    { text: "django initproject", correct: false },
+                ]
+            },
+            {
+                question: "What does the manage.py file do in Django?",
+                answers: [
+                    { text: "Handles database migrations", correct: false },
+                    { text: "Manages the Django project", correct: true },
+                    { text: "Manages CSS stylesheets", correct: false },
+                    { text: "Handles user authentication", correct: false },
+                ]
+            },
+            {
+                question: "What is the purpose of the Django admin interface?",
+                answers: [
+                    { text: "To manage user authentication", correct: false },
+                    { text: "To interact with the database", correct: true },
+                    { text: "To develop front-end templates", correct: false },
+                    { text: "To configure URL patterns", correct: false },
+                ]
+            },
+            {
+                question: "Which of the following is a Django template engine?",
+                answers: [
+                    { text: "Jinja", correct: true },
+                    { text: "Mustache", correct: false },
+                    { text: "Handlebars", correct: false },
+                    { text: "Smarty", correct: false },
+                ]
+            },
+            {
+                question: "What command is used to create a new Django app within a project?",
+                answers: [
+                    { text: "django addapp", correct: false },
+                    { text: "django createapp", correct: false },
+                    { text: "django startapp", correct: true },
+                    { text: "django newapp", correct: false },
+                ]
+            },
+            {
+                question: "Which file is used to define URL patterns in Django apps?",
+                answers: [
+                    { text: "views.py", correct: false },
+                    { text: "urls.py", correct: true },
+                    { text: "models.py", correct: false },
+                    { text: "settings.py", correct: false },
+                ]
+            },
+            {
+                question: "What does a Django model represent?",
+                answers: [
+                    { text: "Front-end structure", correct: false },
+                    { text: "Database table", correct: true },
+                    { text: "HTML template", correct: false },
+                    { text: "User interface element", correct: false },
+                ]
+            },
+            {
+                question: "Which of the following is NOT a valid field type in Django models?",
+                answers: [
+                    { text: "CharField", correct: false },
+                    { text: "DateField", correct: false },
+                    { text: "FloatField", correct: false },
+                    { text: "ArrayField", correct: true },
+                ]
+            },
+            {
+                question: "What does Django's migrations framework do?",
+                answers: [
+                    { text: "Manages database schema changes", correct: true },
+                    { text: "Handles user authentication", correct: false },
+                    { text: "Optimizes front-end performance", correct: false },
+                    { text: "Configures server settings", correct: false },
+                ]
+            },
+            {
+                question: "Which command is used to apply migrations in Django?",
+                answers: [
+                    { text: "django applymigrations", correct: false },
+                    { text: "django migrate", correct: true },
+                    { text: "django runmigrations", correct: false },
+                    { text: "django makemigrations", correct: false },
+                ]
+            },
+            {
+                question: "What is the purpose of Django's middleware?",
+                answers: [
+                    { text: "To manage front-end styling", correct: false },
+                    { text: "To handle user authentication", correct: false },
+                    { text: "To process HTTP requests and responses", correct: true },
+                    { text: "To interact with the database", correct: false },
+                ]
+            },
+            {
+                question: "Which of the following is NOT a built-in authentication backend provided by Django?",
+                answers: [
+                    { text: "Basic Authentication", correct: true },
+                    { text: "Token Authentication", correct: false },
+                    { text: "Session Authentication", correct: false },
+                    { text: "LDAP Authentication", correct: false },
+                ]
+            },
+            {
+                question: "What is the default database engine used by Django?",
+                answers: [
+                    { text: "MySQL", correct: false },
+                    { text: "SQLite", correct: true },
+                    { text: "PostgreSQL", correct: false },
+                    { text: "MongoDB", correct: false },
+                ]
+            },
+            {
+                question: "How do you create a superuser in Django's admin interface?",
+                answers: [
+                    { text: "python manage.py createsuperuser", correct: true },
+                    { text: "python manage.py addsuperuser", correct: false },
+                    { text: "python manage.py makeadmin", correct: false },
+                    { text: "python manage.py createsuperadmin", correct: false },
+                ]
+            },
+            {
+                question: "Which of the following is true about Django's CSRF protection?",
+                answers: [
+                    { text: "It stands for Cross-Site Request Forgery", correct: true },
+                    { text: "It prevents Cross-Site Scripting attacks", correct: false },
+                    { text: "It is enabled by default in Django", correct: false },
+                    { text: "It is only applicable to GET requests", correct: false },
+                ]
+            },
+            {
+                question: "What command is used to run the Django development server?",
+                answers: [
+                    { text: "python manage.py runserver", correct: true },
+                    { text: "python manage.py startserver", correct: false },
+                    { text: "python manage.py start", correct: false },
+                    { text: "python manage.py server", correct: false },
+                ]
+            },
+            {
+                question: "What is the purpose of Django's form handling?",
+                answers: [
+                    { text: "To define database schema", correct: false },
+                    { text: "To manage user authentication", correct: false },
+                    { text: "To process user input", correct: true },
+                    { text: "To render HTML templates", correct: false },
+                ]
+            },
+            {
+                question: "Which function is used to render a template in a Django view?",
+                answers: [
+                    { text: "render_template", correct: false },
+                    { text: "render", correct: true },
+                    { text: "render_html", correct: false },
+                    { text: "display_template", correct: false },
+                ]
+            },
+            {
+                question: "How can you secure Django admin panel from unauthorized access?",
+                answers: [
+                    { text: "By disabling admin panel", correct: false },
+                    { text: "By using strong passwords", correct: false },
+                    { text: "By restricting access with custom middleware", correct: true },
+                    { text: "By using HTTPS", correct: false },
+                ]
+            },
+            {
+                question: "Which of the following is NOT a valid HTTP method Django's views can handle?",
+                answers: [
+                    { text: "GET", correct: false },
+                    { text: "POST", correct: false },
+                    { text: "PUT", correct: false },
+                    { text: "DELETE", correct: true },
+                ]
+            },
+            {
+                question: "What is Django's built-in web server suitable for?",
+                answers: [
+                    { text: "Production use", correct: false },
+                    { text: "Development and testing", correct: true },
+                    { text: "High traffic websites", correct: false },
+                    { text: "Real-time applications", correct: false },
+                ]
+            },
+            // Your existing questions array...
+        ];
+
+        
+        const questionElement = document.getElementById("question");
+        const answerButton = document.getElementById("answer-buttons");
+        const nextButton = document.getElementById("next-btn");
+        const timerElement = document.getElementById("timer");
+        const certificateButton = document.getElementById("certificate-btn");
+        const quizSection = document.getElementById("quiz-section");
+        const startButton = document.getElementById("start-btn");
+
+        startButton.addEventListener('click', showInstructions);
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let timer;
+
+        function showInstructions() {
+            document.getElementById("start-btn").style.display = "none";
+            document.querySelector("h1").style.display = "none";
+            document.querySelector("p").style.display = "none";
+            quizSection.style.display = "block";
+            startQuiz();
+        }
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            nextButton.innerHTML = "Next";
+            certificateButton.style.display = "none";
+            showQuestion();
+        }
+
+        function showQuestion() {
+            resetState();
+            let currentQuestion = questions[currentQuestionIndex];
+            let questionNo = currentQuestionIndex + 1;
+            questionElement.innerHTML = questionNo + ". " + currentQuestion.question;
+
+            currentQuestion.answers.forEach(answer => {
+                const button = document.createElement("button");
+                button.innerHTML = answer.text;
+                button.classList.add("btn");
+                answerButton.appendChild(button);
+                if (answer.correct) {
+                    button.dataset.correct = answer.correct;
+                }
+                button.addEventListener("click", () => selectAnswer(false));
+            });
+
+            let timeLeft = 15;
+            updateTimerDisplay(timeLeft);
+
+            timer = setInterval(() => {
+                timeLeft--;
+                if (timeLeft >= 0) {
+                    updateTimerDisplay(timeLeft);
+                } else {
+                    selectAnswer(true);
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay(seconds) {
+            timerElement.textContent = `${seconds}s`;
+        }
+
+        function resetState() {
+            nextButton.style.display = "none";
+            while (answerButton.firstChild) {
+                answerButton.removeChild(answerButton.firstChild);
+            }
+            clearInterval(timer);
+        }
+
+        function selectAnswer(isTimeUp) {
+            clearInterval(timer);
+        
+            if (isTimeUp) {
+                const correctBtn = document.querySelector(".btn[data-correct='true']");
+                if (correctBtn) {
+                    correctBtn.classList.add("correct");
+                }
+            } else {
+                const selectedBtn = document.querySelector(".btn:hover") || document.querySelector(".btn[data-correct='true']");
+                if (!selectedBtn) return;
+        
+                const isCorrect = selectedBtn.dataset.correct === "true";
+                if (isCorrect) {
+                    selectedBtn.classList.add("correct");
+                    score++;
+                } else {
+                    selectedBtn.classList.add("incorrect");
+                }
+            }
+        
+            // Disable all answer buttons
+            Array.from(answerButton.children).forEach(button => {
+                if (button.dataset.correct === "true") {
+                    button.classList.add("correct");
+                }
+                button.disabled = true;
+            });
+        
+            nextButton.style.display = "block";
+        }
+
+        function showScore() {
+            resetState();
+            questionElement.innerHTML = `You Scored ${score} out of ${questions.length}!`;
+            nextButton.innerHTML = "Play Again";
+            nextButton.style.display = "block";
+        }
+
+        function handleNextButton() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                showScore();
+                if (score >= 20) {
+                    certificateButton.style.display = "block";
+                }
+            }
+        }
+
+        function showCertificate() {
+            if (score >= 20) {
+                // Redirect to the certificate page
+                window.location.href = 'generate_certificate';
+            } else {
+                // Show an alert if the score is less than 20
+                alert("Your score is less than 20. You're not eligible for the certificate!");
+            }
+        }
+        
+        nextButton.addEventListener("click", () => {
+            if (currentQuestionIndex < questions.length) {
+                handleNextButton();
+            } else {
+                startQuiz();
+                // Call the showCertificate function after the quiz is finished
+                showCertificate();
+            }
+        });
+    </script>
+</body>
+</html>

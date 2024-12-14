@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .discussion {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #eee;
+            border-radius: 5px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Community Page</h1>
+    </header>
+
+    <main>
+        <div class="discussion">
+            <h2>Discussion</h2>
+            {% for message in messages %}
+            <div class="message">
+                <p>{{ message.user.username }}: {{ message.message }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Post</button>
+        </form>
+    </main>
+
+    <script>
+        function postMessage() {
+            var newMessage = document.getElementById("newMessage").value;
+            if (newMessage.trim() !== "") {
+                var discussion = document.querySelector(".discussion");
+                var messageContainer = document.createElement("div");
+                messageContainer.classList.add("message");
+                messageContainer.innerHTML = "<p>User: " + newMessage + "</p>";
+                discussion.appendChild(messageContainer);
+                document.getElementById("newMessage").value = "";
+            }
+        }
+    </script>
+
+</body>
+
+</html>

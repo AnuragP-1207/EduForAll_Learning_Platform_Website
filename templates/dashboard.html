@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <style>
+        .author-card {
+            overflow: hidden; /* Add this line */
+        }
+        
+        .author-card-profile {
+            margin-left: 20px; /* Adjust this value as needed */
+        }
+        
+        .col-lg-4, .col-lg-8 {
+            padding: 0 15px; /* Adjust this value as needed */
+        }
+        .author-card-avatar img {
+            border-radius: 50%;
+            width: 200px;  /* Adjust as needed */
+            height: 200px; /* Adjust as needed */
+        }
+    </style>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-4 pb-5">
+            <!-- Account Sidebar-->
+            <div class="author-card pb-3">
+                <div class="author-card-cover" style="background-image: url({% static 'bg.jpg' %});"></div>
+                <div class="author-card-profile">
+                    <div class="author-card-avatar"><img src="{{ user.userprofile.profile_picture.url }}" alt="Profile Picture"></div>
+                    <div class="author-card-details">
+                        <h5 class="author-card-name text-lg">{{ user.username }}</h5><span class="author-card-position">Joined {{ user.date_joined }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Bio</h6>
+                </div>
+                <div class="card-body">
+                    <p>{{ user.userprofile.bio }}</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Skills Learned</h6>
+                </div>
+                <div class="card-body">
+                    <p>{{ user.userprofile.skills }}</p>
+                </div>
+            </div>
+        </div>
+        <!-- Profile Settings-->
+        <div class="col-lg-8 pb-5">
+            <h2>Update Your Profile</h2> <!-- This is the new header -->
+            <form class="row" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="profile_picture">Profile Picture:</label>
+                        <input class="form-control" type="file" id="profile_picture" name="profile_picture" accept="image/*">
+                    </div>
+                    <div class="form-group">
+                        <label for="bio">Bio:</label>
+                        <textarea class="form-control" id="bio" name="bio" rows="4">{{ user.userprofile.bio }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="skills">Skills Learned:</label>
+                        <input class="form-control" type="text" id="skills" name="skills" value="{{ user.userprofile.skills }}">
+                    </div>
+                    <button class="btn btn-primary" type="submit">Update Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

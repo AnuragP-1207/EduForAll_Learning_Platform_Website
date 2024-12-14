@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file if you have one -->
+    <style>
+        /* Add your custom CSS styles here */
+        #bg{
+            background-size: 1800px 900px;
+            background-repeat: no-repeat;
+            background-position: top;
+            background-attachment: fixed;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 10vh;
+        }
+        h1 {
+            text-align: center;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <body id="bg" style="background-image: url('{% static "coding4.jpg"%}')";>
+    <header>
+        <!-- Include your website's navigation bar here -->
+        <!-- Example: <nav> ... </nav> -->
+    </header>
+    <div class="container">
+        <h1>About Us</h1>
+        <p>
+            Welcome to EduForAll, your go-to platform for learning coding and programming skills. We are passionate about making coding education accessible to everyone, regardless of their background or experience.
+        </p>
+        <p>
+            Our mission is to provide high-quality tutorial videos, interactive quizzes, and a supportive community to help you excel in the world of coding. Whether you're a beginner taking your first steps in programming or an experienced developer looking to expand your skills, we've got you covered.
+        </p>
+        <p>
+            Meet our team of dedicated educators and developers who work tirelessly to bring you valuable content and a seamless learning experience. 
+        </p>
+        <p>
+            Thank you for choosing EduForAll as your learning partner. Together, we'll unlock the exciting world of coding and programming.
+        </p>
+        Our team includes:
+            <ul>
+                <li>Lakhiwal Aditya Anilkumar</li>
+                <li>Pandey Anurag Sanjay</li>
+            </ul>
+    </div>
+    <footer>
+        <!-- Include your website's footer here -->
+        <!-- Example: <footer> ... </footer> -->
+    </footer>
+</body>
+</html>
